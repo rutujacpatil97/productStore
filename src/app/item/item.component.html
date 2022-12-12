@@ -1,0 +1,17 @@
+<a style="cursor: pointer;" [routerLink]="[index]" routerLinkActive="active" class="list-group-item clearfix">
+    <div class=" d-flex flex-row align-item-center border border-secondary" style="max-width: 60%">
+        <div class="m-3 p-8 col-xl-9">
+            <h4 class="list-group-item-heading"> {{product.name}} </h4>
+            <h5 class="list-group-item"> Category :{{product.category}} </h5>
+            <h5 class="list-group-item"> Price : {{product.price | currency : 'INR'}} </h5>
+            <app-star-rating></app-star-rating>
+        </div>
+        <div class="m-3 p-3 col-xl-3">
+            <span>
+                <img [src]="product.imagePath" alt="{{ product.name}}" class="img-responsive"
+                    style="max-height :120px ;max-width : 150px">
+            </span>
+        </div>
+          
+    </div>
+</a>
