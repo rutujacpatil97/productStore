@@ -1,17 +1,30 @@
-<a style="cursor: pointer;" [routerLink]="[index]" routerLinkActive="active" class="list-group-item clearfix">
-    <div class=" d-flex flex-row align-item-center border border-secondary" style="max-width: 60%">
-        <div class="m-3 p-8 col-xl-9">
-            <h4 class="list-group-item-heading"> {{product.name}} </h4>
-            <h5 class="list-group-item"> Category :{{product.category}} </h5>
-            <h5 class="list-group-item"> Price : {{product.price | currency : 'INR'}} </h5>
-            <app-star-rating></app-star-rating>
-        </div>
-        <div class="m-3 p-3 col-xl-3">
-            <span>
-                <img [src]="product.imagePath" alt="{{ product.name}}" class="img-responsive"
-                    style="max-height :120px ;max-width : 150px">
-            </span>
-        </div>
-          
+<div class="card h-100 product-card position-relative">
+  <div class="ratio ratio-1x1 overflow-hidden rounded-top">
+    <img [src]="product.imagePath" [alt]="product.name" appImgFallback loading="lazy" />
+  </div>
+  <span class="badge tag" *ngIf="product.badge" [ngClass]="{'bg-danger': product.badge === 'Sale', 'bg-success': product.badge === 'New', 'bg-warning text-dark': product.badge === 'Bestseller'}">
+    {{ product.badge === 'Sale' ? '-' + discount + '%' : product.badge }}
+  </span>
+  <button type="button" class="heart" (click)="store.toggleSaved(product)" [class.on]="store.isSaved(product.id)"
+    [attr.aria-label]="store.isSaved(product.id) ? 'Remove from saved' : 'Save'">
+    <i class="fa" [ngClass]="store.isSaved(product.id) ? 'fa-heart' : 'fa-heart-o'"></i>
+  </button>
+  <div class="card-body d-flex flex-column">
+    <small class="text-body-secondary">{{ product.category }}</small>
+    <h2 class="h6 mb-1"><a class="stretched-link text-body text-decoration-none" [routerLink]="['/products', product.id]">{{ product.name }}</a></h2>
+    <div class="d-flex align-items-center gap-1 small text-body-secondary">
+      <app-star-rating [rating]="product.rating" [readonly]="true" size="sm"></app-star-rating>({{ product.reviews }})
     </div>
-</a>
+    <div class="mt-auto pt-2 d-flex align-items-center justify-content-between">
+      <div>
+        <span class="fw-bold">{{ product.price | currency: 'INR':'symbol':'1.0-0' }}</span>
+        <small class="text-decoration-line-through text-body-secondary ms-1" *ngIf="product.oldPrice">{{ product.oldPrice | currency: 'INR':'symbol':'1.0-0' }}</small>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm add" [disabled]="!product.stock" (click)="store.add(product)" aria-label="Add to cart">
+        <i class="fa fa-cart-plus"></i>
+      </button>
+    </div>
+    <small class="text-danger mt-1" *ngIf="!product.stock">Out of stock</small>
+    <small class="text-warning-emphasis mt-1" *ngIf="product.stock > 0 && product.stock <= 5">Only {{ product.stock }} left</small>
+  </div>
+</div>

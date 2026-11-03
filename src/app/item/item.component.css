@@ -1,0 +1,8 @@
+.product-card { border-radius: 16px; transition: transform .2s, box-shadow .2s; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 .75rem 1.5rem rgba(0,0,0,.15); }
+img { object-fit: cover; transition: transform .3s; }
+.product-card:hover img { transform: scale(1.05); }
+.tag { position: absolute; top: 10px; left: 10px; z-index: 2; }
+.heart { position: absolute; top: 8px; right: 8px; z-index: 3; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(255,255,255,.9); color: #64748b; }
+.heart.on { color: #ef4444; }
+.add { position: relative; z-index: 3; }

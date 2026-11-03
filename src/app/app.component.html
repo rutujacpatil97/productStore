@@ -1,2 +1,10 @@
 <app-header></app-header>
-<app-products class="bg-light"></app-products>
+<main class="min-vh-100 pb-5"><router-outlet></router-outlet></main>
+<footer class="border-top py-4 text-center text-body-secondary small">
+  © Product Store · Free shipping on orders over {{ freeFrom | currency: 'INR':'symbol':'1.0-0' }}
+</footer>
+<div class="toast-container position-fixed bottom-0 end-0 p-3" aria-live="polite">
+  <div class="toast show align-items-center text-bg-dark border-0 mb-2" *ngFor="let t of store.toasts$ | async; trackBy: byId">
+    <div class="d-flex"><div class="toast-body"><i class="fa fa-check-circle text-success me-2"></i>{{ t.text }}</div></div>
+  </div>
+</div>

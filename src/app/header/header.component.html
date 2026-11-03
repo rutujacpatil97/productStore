@@ -1,21 +1,26 @@
-<header>
-    <div class="navbar bg-primary shadow-sm">
-        <div class="navbar-brand align-item-center d-flex">
-            <i style="font-size : 30px; color : white" class="fa fa-gift" aria-hidden="true">&nbsp;
-            </i>
-            <strong style="font-size : 25px; color : white"> <a class="nav-link text-white" routerLink="home">Product
-                    Store</a></strong>&nbsp;&nbsp;&nbsp;
-            <div class="navbar d-flex">
-                <a class="nav-item active nav-link p-2 text-white" routerLink="products">Product List</a>
-                <a class="nav-item nav-link p-2 text-white dropdown-toggle" role="button" data-bs-toggle="dropdown">
-                    Sort <span class="caret"></span></a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" style="cursor: pointer;" >By price</a>
-                    <a class="dropdown-item" style="cursor: pointer;">By rating</a>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search products">
-                <i class="fa fa-search search-icon"></i>
-            </div>
-        </div>
+<header class="sticky-top app-header">
+  <nav class="container d-flex align-items-center gap-3 py-2">
+    <a class="brand d-flex align-items-center gap-2 text-decoration-none" routerLink="/products">
+      <span class="brand-mark"><i class="fa fa-gift" aria-hidden="true"></i></span>
+      <span class="fw-bold fs-5">Product Store</span>
+    </a>
+
+    <div class="search flex-grow-1 position-relative mx-md-4 order-3 order-md-2">
+      <i class="fa fa-search search-icon" aria-hidden="true"></i>
+      <label for="search" class="visually-hidden">Search products</label>
+      <input id="search" type="search" class="form-control rounded-pill ps-5" placeholder="Search products, categories…"
+        [ngModel]="search" (ngModelChange)="onSearch($event)" />
+    </div>
+
+    <div class="d-flex align-items-center gap-1 ms-auto order-2 order-md-3">
+      <button class="icon-btn" type="button" (click)="store.toggleTheme()"
+        [attr.aria-label]="store.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+        <i class="fa" [ngClass]="store.theme === 'dark' ? 'fa-sun-o' : 'fa-moon-o'"></i>
+      </button>
+      <a class="icon-btn position-relative" routerLink="/cart" aria-label="Cart">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="count" *ngIf="(store.cart$ | async) as lines">{{ store.count || '' }}</span>
+      </a>
+    </div>
+  </nav>
+</header>

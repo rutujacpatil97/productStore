@@ -1,18 +1,10 @@
-
-.form-control{
-    border-radius: 3px;
-    width: 300px;
-    position: absolute;
-    top: 10px;
-    right :25px;
-}
-
-.search-icon{
-    position: absolute;
-    z-index : 10;
-    top: 15px;
-    right :30px;
-    color : blue;
-}
-
-
+.app-header { background: var(--bs-body-bg); border-bottom: 1px solid var(--bs-border-color); backdrop-filter: blur(8px); z-index: 1030; }
+.brand { color: var(--bs-body-color); }
+.brand-mark { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+.search { max-width: 520px; }
+.search-icon { position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); color: var(--bs-secondary-color); pointer-events: none; }
+.icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--bs-body-color); font-size: 1.15rem; }
+.icon-btn:hover { background: var(--bs-tertiary-bg); }
+.count { position: absolute; top: 0; right: 0; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px; background: #ef4444; color: #fff; font-size: .7rem; line-height: 18px; text-align: center; }
+.count:empty { display: none; }
+@media (max-width: 767px) { .search { flex-basis: 100%; max-width: none; } nav { flex-wrap: wrap; } }

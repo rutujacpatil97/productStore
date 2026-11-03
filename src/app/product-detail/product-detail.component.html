@@ -1,0 +1,51 @@
+<div class="container pt-4">
+  <nav aria-label="breadcrumb"><ol class="breadcrumb small">
+    <li class="breadcrumb-item"><a routerLink="/products">Shop</a></li>
+    <li class="breadcrumb-item" *ngIf="product">{{ product.category }}</li>
+    <li class="breadcrumb-item active" *ngIf="product">{{ product.name }}</li>
+  </ol></nav>
+
+  <div class="row g-4" *ngIf="product; else notFound">
+    <div class="col-md-6"><div class="ratio ratio-1x1 rounded-4 overflow-hidden shadow-sm">
+      <img [src]="product.imagePath" [alt]="product.name" appImgFallback />
+    </div></div>
+    <div class="col-md-6">
+      <span class="badge bg-secondary mb-2">{{ product.category }}</span>
+      <h1 class="h2">{{ product.name }}</h1>
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <app-star-rating [rating]="product.rating" [readonly]="true"></app-star-rating>
+        <span class="text-body-secondary small">{{ product.rating }}.0 · {{ product.reviews }} reviews</span>
+      </div>
+      <p class="mb-1"><span class="fs-2 fw-bold text-primary">{{ product.price | currency: 'INR':'symbol':'1.0-0' }}</span>
+        <span class="text-decoration-line-through text-body-secondary ms-2" *ngIf="product.oldPrice">{{ product.oldPrice | currency: 'INR':'symbol':'1.0-0' }}</span></p>
+      <p class="text-body-secondary">{{ product.description }}</p>
+      <p class="small" [ngClass]="product.stock ? 'text-success' : 'text-danger'">
+        <i class="fa" [ngClass]="product.stock ? 'fa-check-circle' : 'fa-times-circle'"></i>
+        {{ product.stock ? (product.stock <= 5 ? 'Only ' + product.stock + ' left' : 'In stock') : 'Out of stock' }}
+      </p>
+
+      <div class="d-flex flex-wrap gap-2 align-items-center my-3">
+        <div class="input-group w-auto" *ngIf="product.stock">
+          <button class="btn btn-outline-secondary" type="button" (click)="step(-1)" aria-label="Decrease quantity">−</button>
+          <span class="input-group-text px-3">{{ qty }}</span>
+          <button class="btn btn-outline-secondary" type="button" (click)="step(1)" aria-label="Increase quantity">+</button>
+        </div>
+        <button class="btn btn-primary px-4" type="button" [disabled]="!product.stock" (click)="store.add(product, qty)">
+          <i class="fa fa-cart-plus me-1"></i> Add to cart
+        </button>
+        <button class="btn btn-outline-danger" type="button" (click)="store.toggleSaved(product)">
+          <i class="fa" [ngClass]="store.isSaved(product.id) ? 'fa-heart' : 'fa-heart-o'"></i> {{ store.isSaved(product.id) ? 'Saved' : 'Save' }}
+        </button>
+      </div>
+
+      <div class="border-top pt-3 small"><strong>Your rating</strong>
+        <app-star-rating class="ms-2" [rating]="userRating" (rated)="onRate($event)"></app-star-rating></div>
+    </div>
+  </div>
+  <ng-template #notFound><p class="text-center text-body-secondary py-5">We couldn't find that product.</p></ng-template>
+
+  <section class="mt-5" *ngIf="related.length">
+    <h2 class="h4 mb-3">You might also like</h2>
+    <div class="row g-4"><app-item *ngFor="let p of related" class="col-6 col-lg-3" [product]="p"></app-item></div>
+  </section>
+</div>

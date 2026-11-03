@@ -1,15 +1,37 @@
+<section class="hero text-white">
+  <div class="container py-5">
+    <span class="badge rounded-pill text-bg-light mb-3">New season</span>
+    <h1 class="display-5 fw-bold mb-2">Find something you'll love</h1>
+    <p class="lead mb-0 opacity-75">Clothing, footwear, accessories, tech and home — free shipping over {{ freeFrom | currency: 'INR':'symbol':'1.0-0' }}.</p>
+  </div>
+</section>
 
-<div class="container">
-    <div class="row mt-3">
-        <div class=" row col-xl-12">
-    
-         <app-item 
-                *ngFor="let pr of products  ; let i = index "
-                [product]="pr"
-                [index]="i"
-                
-                ></app-item> 
-        </div>
+<div class="container pt-4">
+  <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+    <button type="button" class="chip" [class.active]="!selectedCategory && !showSaved" (click)="selectCategory('')">All</button>
+    <button *ngFor="let c of categories" type="button" class="chip" [class.active]="selectedCategory === c" (click)="selectCategory(c)">{{ c }}</button>
+    <button type="button" class="chip" [class.active]="showSaved" (click)="showSaved = !showSaved">
+      <i class="fa fa-heart me-1"></i>Saved ({{ (store.saved$ | async)?.length }})
+    </button>
+    <label class="ms-auto d-flex align-items-center gap-2 small text-body-secondary mb-0">
+      {{ shown.length }} {{ shown.length === 1 ? 'product' : 'products' }}
+      <select class="form-select form-select-sm w-auto" aria-label="Sort products" [ngModel]="sort" (ngModelChange)="onSort($event)">
+        <option value="default">Featured</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="rating">Top rated</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="row g-4" *ngIf="shown.length; else empty">
+    <app-item *ngFor="let product of shown; trackBy: trackById" class="col-6 col-lg-4 col-xl-3" [product]="product"></app-item>
+  </div>
+  <ng-template #empty>
+    <div class="text-center text-body-secondary py-5">
+      <i class="fa fa-search fa-2x mb-3"></i>
+      <p>{{ showSaved ? "You haven't saved anything yet." : 'No products match your search.' }}</p>
+      <button type="button" class="btn btn-outline-primary btn-sm" (click)="clearFilters()">Clear filters</button>
     </div>
+  </ng-template>
 </div>
-

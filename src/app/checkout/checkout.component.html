@@ -1,0 +1,52 @@
+<div class="container pt-4">
+  <h1 class="h3 mb-4">Checkout</h1>
+  <ng-container *ngIf="store.cart$ | async as lines">
+    <div class="text-center text-body-secondary py-5" *ngIf="!lines.length; else form">
+      <p>Your cart is empty.</p><a routerLink="/products" class="btn btn-primary">Continue shopping</a>
+    </div>
+    <ng-template #form>
+      <form #f="ngForm" class="row g-4" novalidate [class.was-validated]="submitted" (ngSubmit)="submit(f)">
+        <div class="col-lg-7"><div class="card rounded-4"><div class="card-body row g-3">
+          <h2 class="h5 mb-0">Delivery details</h2>
+          <div class="col-md-6"><label class="form-label" for="name">Full name</label>
+            <input id="name" name="name" class="form-control" required autocomplete="name" [(ngModel)]="model.name" />
+            <div class="invalid-feedback">Please enter your name.</div></div>
+          <div class="col-md-6"><label class="form-label" for="phone">Phone</label>
+            <input id="phone" name="phone" class="form-control" required pattern="[0-9]{10}" inputmode="numeric" autocomplete="tel" [(ngModel)]="model.phone" />
+            <div class="invalid-feedback">Enter a 10-digit phone number.</div></div>
+          <div class="col-12"><label class="form-label" for="email">Email</label>
+            <input id="email" name="email" type="email" class="form-control" required autocomplete="email" [(ngModel)]="model.email" />
+            <div class="invalid-feedback">Enter a valid email address.</div></div>
+          <div class="col-12"><label class="form-label" for="address">Address</label>
+            <input id="address" name="address" class="form-control" required autocomplete="street-address" [(ngModel)]="model.address" />
+            <div class="invalid-feedback">Please enter your address.</div></div>
+          <div class="col-md-6"><label class="form-label" for="city">City</label>
+            <input id="city" name="city" class="form-control" required autocomplete="address-level2" [(ngModel)]="model.city" />
+            <div class="invalid-feedback">Please enter your city.</div></div>
+          <div class="col-md-6"><label class="form-label" for="pincode">PIN code</label>
+            <input id="pincode" name="pincode" class="form-control" required pattern="[0-9]{6}" inputmode="numeric" autocomplete="postal-code" [(ngModel)]="model.pincode" />
+            <div class="invalid-feedback">Enter a 6-digit PIN code.</div></div>
+          <h2 class="h5 mb-0 mt-3">Payment</h2>
+          <div class="col-12">
+            <div class="form-check" *ngFor="let o of [['cod','Cash on delivery'],['upi','UPI'],['card','Credit / debit card']]">
+              <input class="form-check-input" type="radio" name="payment" [id]="'pay-' + o[0]" [value]="o[0]" [(ngModel)]="model.payment" />
+              <label class="form-check-label" [for]="'pay-' + o[0]">{{ o[1] }}</label>
+            </div>
+            <small class="text-body-secondary">Demo store: no real payment is taken.</small>
+          </div>
+        </div></div></div>
+
+        <div class="col-lg-5"><div class="card rounded-4 sticky-lg-top" style="top: 90px"><div class="card-body">
+          <h2 class="h5">Order summary</h2>
+          <div class="d-flex justify-content-between small mb-1" *ngFor="let l of lines"><span>{{ l.product.name }} × {{ l.qty }}</span><span>{{ l.qty * l.product.price | currency: 'INR':'symbol':'1.0-0' }}</span></div>
+          <hr />
+          <div class="d-flex justify-content-between"><span>Subtotal</span><span>{{ store.subtotal | currency: 'INR':'symbol':'1.0-0' }}</span></div>
+          <div class="d-flex justify-content-between"><span>Shipping</span><span>{{ shipping ? (shipping | currency: 'INR':'symbol':'1.0-0') : 'Free' }}</span></div>
+          <div class="d-flex justify-content-between fw-bold fs-5 mt-2"><span>Total</span><span>{{ store.subtotal + shipping | currency: 'INR':'symbol':'1.0-0' }}</span></div>
+          <button class="btn btn-primary w-100 mt-3" type="submit">Place order</button>
+          <a routerLink="/cart" class="btn btn-link w-100 mt-1">Back to cart</a>
+        </div></div></div>
+      </form>
+    </ng-template>
+  </ng-container>
+</div>
